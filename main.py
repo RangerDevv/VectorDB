@@ -22,7 +22,7 @@ datasetVecs = list(dataset.get_embeddings())
 
 normVec1 = norm(queryVec)
 
-randomHashVecArray = np.random.rand(10, 384)
+randomHashVecArray = np.random.rand(50, 384)
 print(f"Random Hash Vector Array: {randomHashVecArray}")
 
 QueryHash = np.dot(queryVec, randomHashVecArray.T)
