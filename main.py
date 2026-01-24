@@ -38,7 +38,7 @@ datasetVecs = list(dataset.get_embeddings())
 
 normVec1 = norm(queryVec)
 
-randomHashVecArray = np.random.rand(24, 384)
+randomHashVecArray = np.random.rand(32, 384)
 
 QueryHash = np.dot(queryVec, randomHashVecArray.T)
 print(f"Query Hash: {QueryHash}")
@@ -47,7 +47,7 @@ bianaryQueryHash = (QueryHash > 0).astype(int)
 print(f"Binary Query Hash: {bianaryQueryHash}")
 
 datasetHashArray = np.dot(datasetVecs, randomHashVecArray.T)
-
+ 
 binaryDatasetHashArray = (datasetHashArray > 0).astype(int)
 print(f"Binary Dataset Hash Array: {binaryDatasetHashArray}")
 
