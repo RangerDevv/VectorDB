@@ -1,4 +1,5 @@
 import dataset
+import vectorDB
 import numpy as np
 from numpy.linalg import norm
 from sentence_transformers import SentenceTransformer
@@ -33,48 +34,9 @@ dataset = dataset.Dataset(data=data)
 
 userQuery = input("Enter your query: ")
 
-queryVec = model.encode(userQuery)
-datasetVecs = list(dataset.get_embeddings())
-
-normVec1 = norm(queryVec)
-
-randomHashVecArray = np.random.rand(32, 384)
-
-QueryHash = np.dot(queryVec, randomHashVecArray.T)
-print(f"Query Hash: {QueryHash}")
-
-bianaryQueryHash = (QueryHash > 0).astype(int)
-print(f"Binary Query Hash: {bianaryQueryHash}")
-
-datasetHashArray = np.dot(datasetVecs, randomHashVecArray.T)
- 
-binaryDatasetHashArray = (datasetHashArray > 0).astype(int)
-print(f"Binary Dataset Hash Array: {binaryDatasetHashArray}")
-
-
-# compare binary hashes by finding the one with the minimum Hamming distance
-min_hamming_dist = float('inf')
-best_match_idx = -1
-
-for idx, binary_hash in enumerate(binaryDatasetHashArray):
-    # Calculate Hamming distance
-    hamming_dist = np.sum(bianaryQueryHash != binary_hash)
-    if hamming_dist < min_hamming_dist:
-        min_hamming_dist = hamming_dist
-        best_match_idx = idx
-
-if best_match_idx != -1:
-    print(f"\nBest LSH match found with document: {dataset.get_data()[best_match_idx]['text']}")
-    print(f"Hamming distance: {min_hamming_dist}")
-
-
-# Loop over each document and calculate similarity (brute force)
-for idx, item in enumerate(dataset.get_data()):
-    dotProd = np.dot(queryVec, datasetVecs[idx])
-    normVec2 = norm(datasetVecs[idx])
-    
-    similarity = dotProd / (normVec1 * normVec2)
-    
-    print(f"Text: {item['text']}")
-    print(f"Similarity: {similarity}")
-    print()
+vectorDB_instance = vectorDB.vectorDB(data)
+lsh_result = vectorDB_instance.search(userQuery)
+print("\nLSH Search Result:")
+if lsh_result:
+    print(f"Best Match: {lsh_result['best_match']}")
+    print(f"Hamming Distance: {lsh_result['hamming_distance']}")
