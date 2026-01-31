@@ -2,12 +2,12 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 from numpy.linalg import norm
 
-from dataset import Dataset
 
-class vectorDB(Dataset):
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    def __init__(self, data):
+class vectorDB():
+    def __init__(self, data, model_name="all-MiniLM-L6-v2", model=None):
         self.data = data
+        self.model = model or SentenceTransformer(model_name)
+
         texts = [item['text'] for item in data]
         self.datasetVecs = self.model.encode(texts)
         self.__randomHashVecArray = np.random.rand(128, 384)

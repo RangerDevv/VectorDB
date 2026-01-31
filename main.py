@@ -1,10 +1,4 @@
-import dataset
 import vectorDB
-import numpy as np
-from numpy.linalg import norm
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer("all-MiniLM-L6-v2")
 data = [
     {"text": "The sky is blue and vast."},
     {"text": "An orange is a type of citrus fruit."},
@@ -28,9 +22,6 @@ data = [
     {"text": "Strawberries are bright red fruits that are often used in desserts."},
     {"text": "Canyons are deep gorges typically carved by rivers over time."}
 ]
-
-
-dataset = dataset.Dataset(data=data)
 
 userQuery = input("Enter your query: ")
 
