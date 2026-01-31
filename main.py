@@ -35,8 +35,13 @@ dataset = dataset.Dataset(data=data)
 userQuery = input("Enter your query: ")
 
 vectorDB_instance = vectorDB.vectorDB(data)
-lsh_result = vectorDB_instance.search(userQuery)
-print("\nLSH Search Result:")
+lsh_result = vectorDB_instance.search(userQuery, k=5)
+print("\nLSH Search Result (Top-k by Hamming distance):")
 if lsh_result:
     print(f"Best Match: {lsh_result['best_match']}")
-    print(f"Hamming Distance: {lsh_result['hamming_distance']}")
+    print(f"Best Match Hamming Distance: {lsh_result['hamming_distance']}")
+
+    print("\nTop matches:")
+    for match in lsh_result["matches"]:
+        print(f"- Text: {match['text']}")
+        print(f"  Hamming Distance: {match['hamming_distance']}")
